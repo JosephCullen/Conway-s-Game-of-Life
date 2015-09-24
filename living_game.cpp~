@@ -1,0 +1,86 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+#define WIDTH 25
+#define HEIGHT 25
+
+int array [HEIGHT][WIDTH];
+int newArray [HEIGHT][WIDTH];
+void arrayPrint();
+void zeroSetup();
+void lifetime();
+void copyArray();
+
+int main ()
+{
+  for(int i = 0; i <= HEIGHT; i++){
+    for(int j = 0; j <= WIDTH; j++){
+      int r = rand() % 10 + 1;
+      // cout << r;
+      if(r <= 5){
+        array[i][j] = 1;
+      }
+      else if(r >= 6)
+        array[i][j] = 0;
+    }
+  }
+  zeroSetup();
+}
+
+void arrayPrint(){
+  for(int i = 0; i <= HEIGHT; i++){
+    for(int j = 0; j <= WIDTH; j++){
+      if(array[i][j] == 1){
+        cout << array[i][j];
+      }
+      else
+        cout << array[i][j];
+    }
+    cout << "\n";
+  }
+}
+
+void zeroSetup(){
+  for(int i = 0; i <= HEIGHT; i++){
+    array[i][0] = 0;
+    array[0][i] = 0;
+    array[HEIGHT][i] = 0;
+    array[i][WIDTH] = 0;
+  }
+
+  arrayPrint();
+  lifetime();
+}
+
+void lifetime(){
+  for(int k = 0; k < 10; k++){
+    for(int i = 1; i <= HEIGHT-1; i++){
+      for(int j = 1; j <= WIDTH-1; j++){
+        int total = array[i-1][j-1] + array[i-1][j]
+          +array[i-1][j+1] + array[i][j+1] 
+          + array[i+1][j+1]
+        +array[i+1][j] + array[i+1][j-1] + array[i][j-1];
+
+        if(total <= 1 || total >= 4){
+          newArray[i][j] = 0;
+        }
+
+        if(array[i][j] == 1 && (total == 2 || total == 3)){
+          newArray[i][j] = 1;
+        }else if(array[i][j] == 0 && total == 3){
+          newArray[i][j] = 1;
+        }
+      }
+    }
+    copyArray();
+    arrayPrint();
+  }
+}
+
+void copyArray(){
+  for(int i = 0; i <= HEIGHT; i++){
+    for(int j = 0; j <= WIDTH; j++){
+      array[i][j] = newArray[i][j];
+    }
+  }
+}
